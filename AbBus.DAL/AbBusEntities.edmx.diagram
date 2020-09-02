@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fe5e03b7a5a14737b0a12e804011f6e7" Name="Diagram1" ZoomLevel="92">
+        <EntityTypeShape EntityType="AbBusModel.master_city" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbBusModel.master_station" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AbBusModel.user" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="AbBusModel.FK_master_station_master_city" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AbBusModel.booking" Width="1.5" PointX="7.875" PointY="6.125" />
+        <EntityTypeShape EntityType="AbBusModel.bus" Width="1.5" PointX="3.375" PointY="7.375" />
+        <EntityTypeShape EntityType="AbBusModel.itinerary" Width="1.5" PointX="7.875" PointY="1.75" />
+        <EntityTypeShape EntityType="AbBusModel.seat" Width="1.5" PointX="5.625" PointY="11.875" />
+        <EntityTypeShape EntityType="AbBusModel.trip" Width="1.5" PointX="5.625" PointY="4" />
+        <AssociationConnector Association="AbBusModel.FK_booking_master_station_arrival" />
+        <AssociationConnector Association="AbBusModel.FK_booking_master_station_boarding" />
+        <AssociationConnector Association="AbBusModel.FK_booking_seat" />
+        <AssociationConnector Association="AbBusModel.FK_booking_trip" />
+        <AssociationConnector Association="AbBusModel.FK_booking_user" />
+        <AssociationConnector Association="AbBusModel.FK_bus_seat" />
+        <AssociationConnector Association="AbBusModel.FK_trip_bus" />
+        <AssociationConnector Association="AbBusModel.FK_itinerary_master_station" />
+        <AssociationConnector Association="AbBusModel.FK_itinerary_trip" />
+        <AssociationConnector Association="AbBusModel.FK_trip_master_station_endstop" />
+        <AssociationConnector Association="AbBusModel.FK_trip_master_station_startstop" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

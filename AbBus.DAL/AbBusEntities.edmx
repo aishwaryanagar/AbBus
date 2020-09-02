@@ -1,0 +1,767 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AbBusModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="booking">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TripID" Type="int" Nullable="false" />
+          <Property Name="SeatID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="BoardingPoint" Type="int" Nullable="false" />
+          <Property Name="ArrivalPoint" Type="int" Nullable="false" />
+          <Property Name="ChargeApplied" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsAirConditioned" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="Brand" Type="nvarchar" MaxLength="50" />
+          <Property Name="MainRow" Type="int" Nullable="false" />
+          <Property Name="OtherRow" Type="int" Nullable="false" />
+          <Property Name="HasUpperDeck" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="itinerary">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TripID" Type="int" Nullable="false" />
+          <Property Name="Stop" Type="int" Nullable="false" />
+          <Property Name="StopSequence" Type="int" Nullable="false" />
+          <Property Name="ArrivalTime" Type="datetime" Nullable="false" />
+          <Property Name="DepartureTime" Type="datetime" Nullable="false" />
+          <Property Name="Fare" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="master_city">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="master_station">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cityid" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="seat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BusId" Type="int" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Occupancy" Type="int" Nullable="false" />
+          <Property Name="IsLower" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="trip">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="StartStop" Type="int" Nullable="false" />
+          <Property Name="EndStop" Type="int" Nullable="false" />
+          <Property Name="BusID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="registeredon" Type="datetime" Nullable="false" />
+          <Property Name="updatedon" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_booking_master_station_arrival">
+          <End Role="seat" Type="Self.seat" Multiplicity="1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seat">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="ArrivalPoint" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_master_station_boarding">
+          <End Role="master_station" Type="Self.master_station" Multiplicity="1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="master_station">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="BoardingPoint" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_seat">
+          <End Role="seat" Type="Self.seat" Multiplicity="1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seat">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="SeatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_trip">
+          <End Role="trip" Type="Self.trip" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trip">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="TripID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_user">
+          <End Role="user" Type="Self.user" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bus_seat">
+          <End Role="bus" Type="Self.bus" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="seat" Type="Self.seat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="seat">
+              <PropertyRef Name="BusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_itinerary_master_station">
+          <End Role="master_station" Type="Self.master_station" Multiplicity="1" />
+          <End Role="itinerary" Type="Self.itinerary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="master_station">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="itinerary">
+              <PropertyRef Name="Stop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_itinerary_trip">
+          <End Role="trip" Type="Self.trip" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="itinerary" Type="Self.itinerary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trip">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="itinerary">
+              <PropertyRef Name="TripID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_master_station_master_city">
+          <End Role="master_city" Type="Self.master_city" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="master_station" Type="Self.master_station" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="master_city">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="master_station">
+              <PropertyRef Name="cityid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_trip_bus">
+          <End Role="bus" Type="Self.bus" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="trip" Type="Self.trip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="trip">
+              <PropertyRef Name="BusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_trip_master_station_endstop">
+          <End Role="master_station" Type="Self.master_station" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="trip" Type="Self.trip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="master_station">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trip">
+              <PropertyRef Name="EndStop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_trip_master_station_startstop">
+          <End Role="master_station" Type="Self.master_station" Multiplicity="1" />
+          <End Role="trip" Type="Self.trip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="master_station">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trip">
+              <PropertyRef Name="StartStop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AbBusModelStoreContainer">
+          <EntitySet Name="booking" EntityType="Self.booking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bus" EntityType="Self.bus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="itinerary" EntityType="Self.itinerary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="master_city" EntityType="Self.master_city" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="master_station" EntityType="Self.master_station" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="seat" EntityType="Self.seat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trip" EntityType="Self.trip" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_booking_master_station_arrival" Association="Self.FK_booking_master_station_arrival">
+            <End Role="seat" EntitySet="seat" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_master_station_boarding" Association="Self.FK_booking_master_station_boarding">
+            <End Role="master_station" EntitySet="master_station" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_seat" Association="Self.FK_booking_seat">
+            <End Role="seat" EntitySet="seat" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_trip" Association="Self.FK_booking_trip">
+            <End Role="trip" EntitySet="trip" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_user" Association="Self.FK_booking_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bus_seat" Association="Self.FK_bus_seat">
+            <End Role="bus" EntitySet="bus" />
+            <End Role="seat" EntitySet="seat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_itinerary_master_station" Association="Self.FK_itinerary_master_station">
+            <End Role="master_station" EntitySet="master_station" />
+            <End Role="itinerary" EntitySet="itinerary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_itinerary_trip" Association="Self.FK_itinerary_trip">
+            <End Role="trip" EntitySet="trip" />
+            <End Role="itinerary" EntitySet="itinerary" />
+          </AssociationSet>
+          <AssociationSet Name="FK_master_station_master_city" Association="Self.FK_master_station_master_city">
+            <End Role="master_city" EntitySet="master_city" />
+            <End Role="master_station" EntitySet="master_station" />
+          </AssociationSet>
+          <AssociationSet Name="FK_trip_bus" Association="Self.FK_trip_bus">
+            <End Role="bus" EntitySet="bus" />
+            <End Role="trip" EntitySet="trip" />
+          </AssociationSet>
+          <AssociationSet Name="FK_trip_master_station_endstop" Association="Self.FK_trip_master_station_endstop">
+            <End Role="master_station" EntitySet="master_station" />
+            <End Role="trip" EntitySet="trip" />
+          </AssociationSet>
+          <AssociationSet Name="FK_trip_master_station_startstop" Association="Self.FK_trip_master_station_startstop">
+            <End Role="master_station" EntitySet="master_station" />
+            <End Role="trip" EntitySet="trip" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AbBusModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="master_city">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="master_station" Relationship="Self.FK_master_station_master_city" FromRole="master_city" ToRole="master_station" />
+        </EntityType>
+        <EntityType Name="master_station">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cityid" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="master_city" Relationship="Self.FK_master_station_master_city" FromRole="master_station" ToRole="master_city" />
+          <NavigationProperty Name="bookings" Relationship="AbBusModel.FK_booking_master_station_boarding" FromRole="master_station" ToRole="booking" />
+          <NavigationProperty Name="itineraries" Relationship="AbBusModel.FK_itinerary_master_station" FromRole="master_station" ToRole="itinerary" />
+          <NavigationProperty Name="trips" Relationship="AbBusModel.FK_trip_master_station_endstop" FromRole="master_station" ToRole="trip" />
+          <NavigationProperty Name="trips1" Relationship="AbBusModel.FK_trip_master_station_startstop" FromRole="master_station" ToRole="trip" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="registeredon" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="updatedon" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="bookings" Relationship="AbBusModel.FK_booking_user" FromRole="user" ToRole="booking" />
+        </EntityType>
+        <Association Name="FK_master_station_master_city">
+          <End Role="master_city" Type="Self.master_city" Multiplicity="1" />
+          <End Role="master_station" Type="Self.master_station" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="master_city">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="master_station">
+              <PropertyRef Name="cityid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AbBusEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="master_city" EntityType="Self.master_city" />
+          <EntitySet Name="master_station" EntityType="Self.master_station" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK_master_station_master_city" Association="Self.FK_master_station_master_city">
+            <End Role="master_city" EntitySet="master_city" />
+            <End Role="master_station" EntitySet="master_station" />
+          </AssociationSet>
+          <EntitySet Name="bookings" EntityType="AbBusModel.booking" />
+          <EntitySet Name="buses" EntityType="AbBusModel.bus" />
+          <EntitySet Name="itineraries" EntityType="AbBusModel.itinerary" />
+          <EntitySet Name="seats" EntityType="AbBusModel.seat" />
+          <EntitySet Name="trips" EntityType="AbBusModel.trip" />
+          <AssociationSet Name="FK_booking_master_station_arrival" Association="AbBusModel.FK_booking_master_station_arrival">
+            <End Role="seat" EntitySet="seats" />
+            <End Role="booking" EntitySet="bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_master_station_boarding" Association="AbBusModel.FK_booking_master_station_boarding">
+            <End Role="master_station" EntitySet="master_station" />
+            <End Role="booking" EntitySet="bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_seat" Association="AbBusModel.FK_booking_seat">
+            <End Role="seat" EntitySet="seats" />
+            <End Role="booking" EntitySet="bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_trip" Association="AbBusModel.FK_booking_trip">
+            <End Role="trip" EntitySet="trips" />
+            <End Role="booking" EntitySet="bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_user" Association="AbBusModel.FK_booking_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="booking" EntitySet="bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bus_seat" Association="AbBusModel.FK_bus_seat">
+            <End Role="bus" EntitySet="buses" />
+            <End Role="seat" EntitySet="seats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_trip_bus" Association="AbBusModel.FK_trip_bus">
+            <End Role="bus" EntitySet="buses" />
+            <End Role="trip" EntitySet="trips" />
+          </AssociationSet>
+          <AssociationSet Name="FK_itinerary_master_station" Association="AbBusModel.FK_itinerary_master_station">
+            <End Role="master_station" EntitySet="master_station" />
+            <End Role="itinerary" EntitySet="itineraries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_itinerary_trip" Association="AbBusModel.FK_itinerary_trip">
+            <End Role="trip" EntitySet="trips" />
+            <End Role="itinerary" EntitySet="itineraries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_trip_master_station_endstop" Association="AbBusModel.FK_trip_master_station_endstop">
+            <End Role="master_station" EntitySet="master_station" />
+            <End Role="trip" EntitySet="trips" />
+          </AssociationSet>
+          <AssociationSet Name="FK_trip_master_station_startstop" Association="AbBusModel.FK_trip_master_station_startstop">
+            <End Role="master_station" EntitySet="master_station" />
+            <End Role="trip" EntitySet="trips" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="booking">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TripID" Type="Int32" Nullable="false" />
+          <Property Name="SeatID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="BoardingPoint" Type="Int32" Nullable="false" />
+          <Property Name="ArrivalPoint" Type="Int32" Nullable="false" />
+          <Property Name="ChargeApplied" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="seat" Relationship="AbBusModel.FK_booking_master_station_arrival" FromRole="booking" ToRole="seat" />
+          <NavigationProperty Name="master_station" Relationship="AbBusModel.FK_booking_master_station_boarding" FromRole="booking" ToRole="master_station" />
+          <NavigationProperty Name="seat1" Relationship="AbBusModel.FK_booking_seat" FromRole="booking" ToRole="seat" />
+          <NavigationProperty Name="trip" Relationship="AbBusModel.FK_booking_trip" FromRole="booking" ToRole="trip" />
+          <NavigationProperty Name="user" Relationship="AbBusModel.FK_booking_user" FromRole="booking" ToRole="user" />
+        </EntityType>
+        <EntityType Name="bus">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsAirConditioned" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MainRow" Type="Int32" Nullable="false" />
+          <Property Name="OtherRow" Type="Int32" Nullable="false" />
+          <Property Name="HasUpperDeck" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="seats" Relationship="AbBusModel.FK_bus_seat" FromRole="bus" ToRole="seat" />
+          <NavigationProperty Name="trips" Relationship="AbBusModel.FK_trip_bus" FromRole="bus" ToRole="trip" />
+        </EntityType>
+        <EntityType Name="itinerary">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TripID" Type="Int32" Nullable="false" />
+          <Property Name="Stop" Type="Int32" Nullable="false" />
+          <Property Name="StopSequence" Type="Int32" Nullable="false" />
+          <Property Name="ArrivalTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DepartureTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Fare" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="master_station" Relationship="AbBusModel.FK_itinerary_master_station" FromRole="itinerary" ToRole="master_station" />
+          <NavigationProperty Name="trip" Relationship="AbBusModel.FK_itinerary_trip" FromRole="itinerary" ToRole="trip" />
+        </EntityType>
+        <EntityType Name="seat">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BusId" Type="Int32" Nullable="false" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Occupancy" Type="Int32" Nullable="false" />
+          <Property Name="IsLower" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="bookings" Relationship="AbBusModel.FK_booking_master_station_arrival" FromRole="seat" ToRole="booking" />
+          <NavigationProperty Name="bookings1" Relationship="AbBusModel.FK_booking_seat" FromRole="seat" ToRole="booking" />
+          <NavigationProperty Name="bus" Relationship="AbBusModel.FK_bus_seat" FromRole="seat" ToRole="bus" />
+        </EntityType>
+        <EntityType Name="trip">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="StartStop" Type="Int32" Nullable="false" />
+          <Property Name="EndStop" Type="Int32" Nullable="false" />
+          <Property Name="BusID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="bookings" Relationship="AbBusModel.FK_booking_trip" FromRole="trip" ToRole="booking" />
+          <NavigationProperty Name="bus" Relationship="AbBusModel.FK_trip_bus" FromRole="trip" ToRole="bus" />
+          <NavigationProperty Name="itineraries" Relationship="AbBusModel.FK_itinerary_trip" FromRole="trip" ToRole="itinerary" />
+          <NavigationProperty Name="master_station" Relationship="AbBusModel.FK_trip_master_station_endstop" FromRole="trip" ToRole="master_station" />
+          <NavigationProperty Name="master_station1" Relationship="AbBusModel.FK_trip_master_station_startstop" FromRole="trip" ToRole="master_station" />
+        </EntityType>
+        <Association Name="FK_booking_master_station_arrival">
+          <End Type="AbBusModel.seat" Role="seat" Multiplicity="1" />
+          <End Type="AbBusModel.booking" Role="booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seat">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="ArrivalPoint" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_master_station_boarding">
+          <End Type="AbBusModel.master_station" Role="master_station" Multiplicity="1" />
+          <End Type="AbBusModel.booking" Role="booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="master_station">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="BoardingPoint" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_seat">
+          <End Type="AbBusModel.seat" Role="seat" Multiplicity="1" />
+          <End Type="AbBusModel.booking" Role="booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seat">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="SeatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_trip">
+          <End Type="AbBusModel.trip" Role="trip" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AbBusModel.booking" Role="booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trip">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="TripID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_user">
+          <End Type="AbBusModel.user" Role="user" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AbBusModel.booking" Role="booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bus_seat">
+          <End Type="AbBusModel.bus" Role="bus" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AbBusModel.seat" Role="seat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="seat">
+              <PropertyRef Name="BusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_trip_bus">
+          <End Type="AbBusModel.bus" Role="bus" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AbBusModel.trip" Role="trip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="trip">
+              <PropertyRef Name="BusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_itinerary_master_station">
+          <End Type="AbBusModel.master_station" Role="master_station" Multiplicity="1" />
+          <End Type="AbBusModel.itinerary" Role="itinerary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="master_station">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="itinerary">
+              <PropertyRef Name="Stop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_itinerary_trip">
+          <End Type="AbBusModel.trip" Role="trip" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AbBusModel.itinerary" Role="itinerary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trip">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="itinerary">
+              <PropertyRef Name="TripID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_trip_master_station_endstop">
+          <End Type="AbBusModel.master_station" Role="master_station" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AbBusModel.trip" Role="trip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="master_station">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trip">
+              <PropertyRef Name="EndStop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_trip_master_station_startstop">
+          <End Type="AbBusModel.master_station" Role="master_station" Multiplicity="1" />
+          <End Type="AbBusModel.trip" Role="trip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="master_station">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="trip">
+              <PropertyRef Name="StartStop" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AbBusModelStoreContainer" CdmEntityContainer="AbBusEntities">
+          <EntitySetMapping Name="master_city">
+            <EntityTypeMapping TypeName="AbBusModel.master_city">
+              <MappingFragment StoreEntitySet="master_city">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="master_station">
+            <EntityTypeMapping TypeName="AbBusModel.master_station">
+              <MappingFragment StoreEntitySet="master_station">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="cityid" ColumnName="cityid" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="AbBusModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="registeredon" ColumnName="registeredon" />
+                <ScalarProperty Name="updatedon" ColumnName="updatedon" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bookings">
+            <EntityTypeMapping TypeName="AbBusModel.booking">
+              <MappingFragment StoreEntitySet="booking">
+                <ScalarProperty Name="ChargeApplied" ColumnName="ChargeApplied" />
+                <ScalarProperty Name="ArrivalPoint" ColumnName="ArrivalPoint" />
+                <ScalarProperty Name="BoardingPoint" ColumnName="BoardingPoint" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="SeatID" ColumnName="SeatID" />
+                <ScalarProperty Name="TripID" ColumnName="TripID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="buses">
+            <EntityTypeMapping TypeName="AbBusModel.bus">
+              <MappingFragment StoreEntitySet="bus">
+                <ScalarProperty Name="HasUpperDeck" ColumnName="HasUpperDeck" />
+                <ScalarProperty Name="OtherRow" ColumnName="OtherRow" />
+                <ScalarProperty Name="MainRow" ColumnName="MainRow" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsAirConditioned" ColumnName="IsAirConditioned" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="itineraries">
+            <EntityTypeMapping TypeName="AbBusModel.itinerary">
+              <MappingFragment StoreEntitySet="itinerary">
+                <ScalarProperty Name="Fare" ColumnName="Fare" />
+                <ScalarProperty Name="DepartureTime" ColumnName="DepartureTime" />
+                <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
+                <ScalarProperty Name="StopSequence" ColumnName="StopSequence" />
+                <ScalarProperty Name="Stop" ColumnName="Stop" />
+                <ScalarProperty Name="TripID" ColumnName="TripID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="seats">
+            <EntityTypeMapping TypeName="AbBusModel.seat">
+              <MappingFragment StoreEntitySet="seat">
+                <ScalarProperty Name="IsLower" ColumnName="IsLower" />
+                <ScalarProperty Name="Occupancy" ColumnName="Occupancy" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="BusId" ColumnName="BusId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trips">
+            <EntityTypeMapping TypeName="AbBusModel.trip">
+              <MappingFragment StoreEntitySet="trip">
+                <ScalarProperty Name="BusID" ColumnName="BusID" />
+                <ScalarProperty Name="EndStop" ColumnName="EndStop" />
+                <ScalarProperty Name="StartStop" ColumnName="StartStop" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

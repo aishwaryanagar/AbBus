@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbBus", "AbBus\AbBus.csproj", "{9F364E61-068D-4311-85E4-16281D59907D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbBus.BAL", "AbBus.BAL\AbBus.BAL.csproj", "{2FE90F0D-6438-43A8-91B9-7A461025F1A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbBus.DAL", "AbBus.DAL\AbBus.DAL.csproj", "{86EA6184-A9F5-47E7-B687-50BC671D4606}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F364E61-068D-4311-85E4-16281D59907D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F364E61-068D-4311-85E4-16281D59907D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F364E61-068D-4311-85E4-16281D59907D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F364E61-068D-4311-85E4-16281D59907D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FE90F0D-6438-43A8-91B9-7A461025F1A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FE90F0D-6438-43A8-91B9-7A461025F1A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FE90F0D-6438-43A8-91B9-7A461025F1A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FE90F0D-6438-43A8-91B9-7A461025F1A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86EA6184-A9F5-47E7-B687-50BC671D4606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86EA6184-A9F5-47E7-B687-50BC671D4606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86EA6184-A9F5-47E7-B687-50BC671D4606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86EA6184-A9F5-47E7-B687-50BC671D4606}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {79D4D15E-4033-4EA0-884A-E391A4ABC70E}
+	EndGlobalSection
+EndGlobal
