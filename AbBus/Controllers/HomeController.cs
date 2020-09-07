@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,11 +9,10 @@ namespace AbBus.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        // GET: Home
+        public string Index()
         {
-            ViewBag.Title = "Home Page";
-
-            return View();
+            return "Hello! Welcome to AbBus API project. Now you can access the endpoints";
         }
     }
 }

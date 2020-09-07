@@ -10,5 +10,7 @@ namespace AbBus.DAL
     {
         int Save();
         UserRepository Users { get; }
+
+        CityRepository Cities { get; }
     }
 }

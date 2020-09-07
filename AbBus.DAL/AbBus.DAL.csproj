@@ -73,13 +73,15 @@
     <Compile Include="bus.cs">
       <DependentUpon>AbBusEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="GenericRepository.cs" />
-    <Compile Include="IGenericRepository.cs" />
+    <Compile Include="Repository\CityRepository.cs" />
+    <Compile Include="Repository\GenericRepository.cs" />
+    <Compile Include="IRepository\ICityRepository.cs" />
+    <Compile Include="IRepository\IGenericRepository.cs" />
     <Compile Include="itinerary.cs">
       <DependentUpon>AbBusEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="IUserRepository.cs" />
+    <Compile Include="IRepository\IUserRepository.cs" />
     <Compile Include="master_city.cs">
       <DependentUpon>AbBusEntities.tt</DependentUpon>
     </Compile>
@@ -98,7 +100,7 @@
     <Compile Include="user.cs">
       <DependentUpon>AbBusEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserRepository.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="AbBusEntities.edmx">

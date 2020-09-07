@@ -11,7 +11,6 @@ namespace AbBus.Controllers
     [System.Web.Mvc.Route("api/[controller]")]
     public class UserController : ApiController
     {
-
         private readonly UserManagement _usrManagement;
         UserController()
         {
@@ -41,7 +40,7 @@ namespace AbBus.Controllers
         }
 
         [JWTAuthenticationFilter]
-        [System.Web.Http.HttpGet()]
+        [System.Web.Http.HttpPut()]
         [System.Web.Mvc.Route("edit-profile")]
         public ActionResult EditProfile(string name, string email)
         {

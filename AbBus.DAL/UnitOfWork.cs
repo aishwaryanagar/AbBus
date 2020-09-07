@@ -10,10 +10,13 @@ namespace AbBus.DAL
     {
         private readonly AbBusEntities _dbcontext;
         public  UserRepository Users { get; }
+
+        public CityRepository Cities { get; }
         public UnitOfWork()
         {
             _dbcontext = new AbBusEntities();
             Users = new UserRepository(_dbcontext);
+            Cities = new CityRepository(_dbcontext);
         }
 
         public int Save()
